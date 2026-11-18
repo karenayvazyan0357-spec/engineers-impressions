@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Инженеры впечатлений — проектируем опыт, собираем впечатления</title>
+    <meta
+      name="description"
+      content="«Инженеры впечатлений» — студия на стыке инженерии, дизайна и музейной культуры: проектируем экспозиции, пространства и цифровой опыт в Санкт-Петербурге."
+    />
+
+    <!-- Графитовая тема: цвет интерфейса браузера совпадает с тёмными секциями сайта -->
+    <meta name="theme-color" content="#151b1d" />
+
+    <!-- Канонический адрес опубликованной версии (project-страница GitHub Pages).
+         При переезде на собственный домен меняется здесь и в vite.config.ts. -->
+    <link rel="canonical" href="https://karenayvazyan0357-spec.github.io/engineers-impressions/" />
+
+    <!-- Превью ссылки: og:image обязан быть абсолютным URL, иначе
+         мессенджеры и соцсети не показывают картинку. Файл лежит в public и
+         попадает в сборку как есть; пересобрать — node scripts/generate-brand-assets.mjs -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Инженеры впечатлений" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:url" content="https://karenayvazyan0357-spec.github.io/engineers-impressions/" />
+    <meta property="og:title" content="Инженеры впечатлений — проектируем опыт, собираем впечатления" />
+    <meta
+      property="og:description"
+      content="«Инженеры впечатлений» — студия на стыке инженерии, дизайна и музейной культуры: проектируем экспозиции, пространства и цифровой опыт в Санкт-Петербурге."
+    />
+    <meta
+      property="og:image"
+      content="https://karenayvazyan0357-spec.github.io/engineers-impressions/og-image.png"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Эмблема и название студии «Инженеры впечатлений» на графитовом фоне" />
+
+    <!-- Twitter/X использует свой набор тегов; дублируем карточку вручную -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Инженеры впечатлений — проектируем опыт, собираем впечатления" />
+    <meta
+      name="twitter:description"
+      content="Студия на стыке инженерии, дизайна и музейной культуры: экспозиции, пространства и цифровой опыт в Санкт-Петербурге."
+    />
+    <meta
+      name="twitter:image"
+      content="https://karenayvazyan0357-spec.github.io/engineers-impressions/og-image.png"
+    />
+
+    <!-- Шрифты: preconnect до загрузки CSS, чтобы сэкономить один RTT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Только используемые начертания:
+         Playfair Display 400/500 — display и заголовки,
+         Inter 400/500/600 — body и интерфейс,
+         JetBrains Mono 400/500 — технические подписи и каталожные строки -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Playfair+Display:wght@400;500&amp;display=swap"
+    />
+
+    <!-- Иконки сайта. Пути строятся от %BASE_URL% (значение base из vite.config.ts),
+         поэтому одинаково работают и в dev-сервере, и в собранной версии на GitHub Pages.
+         SVG — основной формат, ICO и PNG — фолбэк для старых браузеров и Windows. -->
+    <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="%BASE_URL%favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="%BASE_URL%favicon-16.png" />
+    <link rel="icon" href="%BASE_URL%favicon.ico" sizes="48x48" />
+    <link rel="apple-touch-icon" sizes="180x180" href="%BASE_URL%apple-touch-icon.png" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

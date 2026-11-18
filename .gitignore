@@ -1,0 +1,52 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Служебные артефакты локальных проверок: скриншоты, отчёты, временные скрипты.
+# В репозиторий попадает только сам сайт и его конфигурация.
+# Шаблоны с ведущим слэшем — только в корне, чтобы не задеть ассеты в public/.
+/.playwright-mcp/
+/.preview-thumbs/
+/quality-*.png
+/phase*-*.mjs
+/phase*-*.json
+/phase*-*.pid
+/assembly-check.mjs
+/cases-visual.mjs
+/contact-check.mjs
+/layers-check.mjs
+/layers-visual.mjs
+/layers-report.json
+/playwright-mcp.config.json
+/*.log
+/.ls.txt
+/dev.err
+/preview.err
+
+# Переменные окружения (ключи и токены локальной машины)
+.env
+.env.*
+!.env.example
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.err
+*.bak

@@ -1,0 +1,804 @@
+/* ==========================================================================
+   Assembly — «Сборочный цех»
+   --------------------------------------------------------------------------
+   Светлая секция после тёмного Cases: чертёжный лист с центральным модулем
+   впечатления и пятью этапами сборки. Выбор этапа перекрашивает схему и
+   обновляет описание. Токены — styles/variables.css; локальные значения
+   собраны в --assembly-* и помечены комментариями.
+   ========================================================================== */
+
+.assembly {
+  /* Терракота в мелком тексте не проходит по контрасту — акцентный
+     «чернильный» оттенок смешивается с графитом (как в Layers):
+     68 % дают на бумаге 4.76:1 (72 % — 4.497:1, на грани AA). */
+  --assembly-accent-ink: var(--color-terracotta);
+  --assembly-accent-ink: color-mix(in srgb, var(--color-terracotta) 68%, var(--color-graphite));
+  --assembly-column-gap: clamp(1.5rem, 3vw, 3.5rem);
+
+  overflow: clip;
+  padding-block: var(--section-space);
+  color: var(--text-primary);
+  background-color: var(--surface-page);
+}
+
+.assembly__frame {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+/* --- Верхняя техническая строка ------------------------------------------ */
+
+.assembly__top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.assembly__top-mark {
+  flex: none;
+  width: clamp(1.25rem, 3vw, 2.5rem);
+  height: var(--line-1);
+  background-color: var(--accent);
+}
+
+.assembly__top-label,
+.assembly__top-index {
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-caption);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.assembly__top-rule {
+  flex: 1 1 auto;
+  height: var(--line-1);
+  background-color: var(--border-default);
+}
+
+.assembly__top-index {
+  flex: none;
+  white-space: nowrap;
+}
+
+/* --- Заголовок и лид ------------------------------------------------------ */
+
+.assembly__head {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: var(--assembly-column-gap);
+  align-items: end;
+  margin-top: clamp(1.75rem, 3.5vw, 3rem);
+}
+
+.assembly__title {
+  font-size: clamp(2rem, 1.3rem + 3vw, 4rem);
+  letter-spacing: var(--ls-display);
+  text-wrap: balance;
+}
+
+.assembly__title-line {
+  display: block;
+}
+
+.assembly__title-accent {
+  color: var(--assembly-accent-ink);
+}
+
+.assembly__lede {
+  max-width: 34ch;
+  padding-left: clamp(1rem, 2vw, 2rem);
+  border-left: var(--line-1) solid var(--border-default);
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+/* --- Основная область: чертёжный лист + консоль --------------------------- */
+
+.assembly__body {
+  margin-top: clamp(2rem, 4vw, 3.5rem);
+}
+
+/* --- Чертёжный лист ------------------------------------------------------- */
+
+.assembly__sheet {
+  margin: 0;
+  border: var(--line-1) solid var(--border-strong);
+  background-color: var(--surface-page);
+}
+
+.assembly__sheet-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-4);
+  padding: var(--space-3) clamp(0.75rem, 1.5vw, 1.25rem);
+  border-bottom: var(--line-1) solid var(--border-default);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  line-height: var(--lh-caption);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.assembly__sheet-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-primary);
+}
+
+.assembly__sheet-label::before {
+  content: '';
+  flex: none;
+  width: 0.375rem;
+  height: 0.375rem;
+  background-color: var(--accent);
+}
+
+.assembly__sheet-note {
+  color: var(--assembly-accent-ink);
+}
+
+.assembly__sheet-body {
+  padding: clamp(0.5rem, 1.5vw, 1.25rem);
+}
+
+.assembly__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  padding: var(--space-2) clamp(0.75rem, 1.5vw, 1.25rem) var(--space-3);
+  border-top: var(--line-1) solid var(--border-default);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  line-height: var(--lh-caption);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.assembly__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.assembly__legend-swatch {
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+.assembly__legend-swatch--core {
+  background-color: var(--accent-muted);
+  border: var(--line-1) solid var(--color-drawing-blue);
+}
+
+.assembly__legend-swatch--tech {
+  border: var(--line-1) solid var(--color-drawing-blue);
+}
+
+.assembly__legend-swatch--accent {
+  background-color: var(--accent);
+}
+
+/* --- Консоль: этапы и описание -------------------------------------------- */
+
+.assembly__console {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: var(--assembly-column-gap);
+  align-items: start;
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.assembly__stages {
+  min-width: 0;
+}
+
+.assembly__stages-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: var(--line-1) solid var(--border-strong);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-micro);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.assembly__stages-range {
+  color: var(--assembly-accent-ink);
+}
+
+.assembly__stage-list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.assembly__stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: 7rem;
+  padding: var(--space-3) var(--space-3) var(--space-4);
+  border: var(--line-1) solid var(--border-default);
+  text-align: left;
+  color: var(--text-secondary);
+  transition:
+    background-color var(--transition-base),
+    border-color var(--transition-base),
+    color var(--transition-base);
+}
+
+/* Терракотовый рельс сверху — появляется у активного этапа */
+.assembly__stage::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--line-2);
+  background-color: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--transition-base);
+}
+
+.assembly__stage-index {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  transition: color var(--transition-base);
+}
+
+/* Заголовок этапа — flex-элемент колонки с align-items: flex-start. Без
+   ограничения по ширине он растягивается до max-content, и длинные названия
+   («Проектирование», «Конструирование») выходят за рамку карточки и
+   накладываются на соседние (на 1440 — на 22–30 px). max-width: 100%
+   возвращает перенос строке, hyphens + balance делят длинное слово по слогам
+   на две равные строки вместо обрыва посреди слога, overflow-wrap остаётся
+   страховкой для неразрывных случаев. Кегль подобран под самую узкую
+   5-колоночную раскладку (1024 px, карточка ≈ 99 px): 17 px на широком
+   экране → 14 px на узком, чтобы даже «Конструирование» уложилось в две
+   строки и карточка сохранила min-height. */
+.assembly__stage-title {
+  max-width: 100%;
+  font-family: var(--font-display);
+  font-size: clamp(0.875rem, 0.78rem + 0.3vw, 1.0625rem);
+  line-height: 1.18;
+  letter-spacing: var(--ls-heading);
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+.assembly__stage-mark {
+  width: 0.4375rem;
+  height: 0.4375rem;
+  margin-top: auto;
+  border: var(--line-1) solid var(--tech-line);
+  transition:
+    background-color var(--transition-base),
+    border-color var(--transition-base);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .assembly__stage:hover {
+    background-color: var(--color-graphite-08);
+    color: var(--text-primary);
+  }
+
+  .assembly__stage:hover .assembly__stage-index {
+    color: var(--text-primary);
+  }
+}
+
+.assembly__stage[aria-pressed='true'] {
+  background-color: var(--accent-muted);
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+
+.assembly__stage[aria-pressed='true']::before {
+  transform: scaleX(1);
+}
+
+/* Номер выбранного этапа лежит на подложке --accent-muted: локальный
+   --assembly-accent-ink даёт там 3.82:1, поэтому берём более тёмную
+   «чернильную» смесь (4.81:1). */
+.assembly__stage[aria-pressed='true'] .assembly__stage-index {
+  color: var(--text-accent-ink-strong);
+}
+
+.assembly__stage[aria-pressed='true'] .assembly__stage-mark {
+  border-color: var(--accent);
+  background-color: var(--accent);
+}
+
+.assembly__hint {
+  margin-top: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  line-height: var(--lh-caption);
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+}
+
+/* --- Панель описания активного этапа -------------------------------------- */
+
+.assembly__readout {
+  min-width: 0;
+  padding: clamp(1.25rem, 2vw, 2rem);
+  border: var(--line-1) solid var(--border-strong);
+  background-color: var(--surface-page);
+}
+
+.assembly__readout-title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2.125rem);
+}
+
+.assembly__readout-index {
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.08em;
+  color: var(--assembly-accent-ink);
+}
+
+.assembly__desc {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: var(--line-1) solid var(--border-default);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+.assembly__params {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-3) var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.assembly__param {
+  padding-top: var(--space-3);
+  border-top: var(--line-1) solid var(--border-default);
+}
+
+.assembly__param-label {
+  margin-bottom: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.assembly__param-value {
+  font-size: var(--fs-small);
+  line-height: 1.45;
+  color: var(--text-primary);
+}
+
+/* --- Нижняя техническая строка -------------------------------------------- */
+
+.assembly__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-3) var(--space-4);
+  margin-top: clamp(2rem, 4vw, 3.5rem);
+  padding-top: var(--space-4);
+  border-top: var(--line-1) solid var(--border-strong);
+}
+
+.assembly__footer-mark {
+  flex: none;
+  width: clamp(1.25rem, 3vw, 2.5rem);
+  height: var(--line-1);
+  background-color: var(--accent);
+  transform: translateY(-0.2rem);
+}
+
+.assembly__footer-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.assembly__footer-text {
+  flex: 1 1 40ch;
+  max-width: 56ch;
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.assembly__footer-index {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* --- Смена этапа: короткая проявляющаяся смена описания ------------------- */
+
+@keyframes assembly-swap {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.assembly__swap {
+  animation: assembly-swap var(--duration-slow) var(--ease-out) both;
+}
+
+/* ==========================================================================
+   Чертёжная схема
+   Штрихи не масштабируются вместе с листом (vector-effect): толщина линии
+   остаётся инженерной при любой ширине панели.
+   ========================================================================== */
+
+.assembly-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.assembly-svg--radial {
+  aspect-ratio: 1200 / 560;
+}
+
+.assembly-svg--vertical {
+  display: none;
+  aspect-ratio: 360 / 640;
+}
+
+.assembly-svg :is(line, path, rect, circle, polyline) {
+  vector-effect: non-scaling-stroke;
+}
+
+.assembly-svg text {
+  font-family: var(--font-mono);
+}
+
+.assembly-svg__grid line {
+  stroke: var(--grid-line);
+  stroke-width: 1;
+  stroke-dasharray: 2 10;
+  opacity: 0.55;
+}
+
+.assembly-svg__frame {
+  fill: none;
+  stroke: var(--tech-line);
+  stroke-width: 1;
+}
+
+.assembly-svg__marks path {
+  fill: none;
+  stroke: var(--tech-line);
+  stroke-width: 1;
+}
+
+/* Центральный модуль */
+.assembly-svg__core-outer {
+  fill: none;
+  stroke: var(--color-drawing-blue);
+  stroke-width: 1.25;
+}
+
+.assembly-svg__core-diamond {
+  fill: none;
+  stroke: var(--color-drawing-blue);
+  stroke-width: 1;
+}
+
+.assembly-svg__core-hatch {
+  opacity: 0.5;
+}
+
+.assembly-svg__hatch-line {
+  stroke: var(--tech-line);
+  stroke-width: 1;
+}
+
+.assembly-svg__core-lens {
+  fill: var(--surface-page);
+  stroke: var(--color-drawing-blue);
+  stroke-width: 1.25;
+}
+
+.assembly-svg__core-axis {
+  stroke: var(--tech-line);
+  stroke-width: 1;
+  stroke-dasharray: 6 6;
+}
+
+.assembly-svg__ring {
+  fill: none;
+  stroke: var(--tech-line);
+  stroke-width: 1;
+  stroke-dasharray: 6 6;
+}
+
+/* Размерные линии */
+.assembly-svg__dim,
+.assembly-svg__dim-tick {
+  stroke: var(--color-drawing-blue-48);
+  stroke-width: 1;
+}
+
+.assembly-svg__dim-label {
+  fill: var(--text-muted);
+  font-size: 20px;
+  letter-spacing: 0.08em;
+}
+
+/* Этапы: связь, порт, узел, символ, номер */
+.assembly-svg__leader {
+  stroke: var(--color-drawing-blue);
+  stroke-width: 1;
+  opacity: 0.9;
+}
+
+.assembly-svg__port {
+  fill: var(--surface-page);
+  stroke: var(--color-drawing-blue);
+  stroke-width: 1.25;
+}
+
+.assembly-svg__pulse {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.assembly-svg__node {
+  fill: var(--surface-page);
+  stroke: var(--color-drawing-blue);
+  stroke-width: 1.5;
+  transition:
+    fill var(--transition-base),
+    stroke var(--transition-base);
+}
+
+.assembly-svg__glyph {
+  fill: none;
+  stroke: var(--color-drawing-blue);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke var(--transition-base);
+}
+
+.assembly-svg__tag {
+  fill: var(--text-muted);
+  font-size: 22px;
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.1em;
+  transition: fill var(--transition-base);
+}
+
+.assembly-svg__label {
+  fill: var(--text-secondary);
+  font-size: 24px;
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.02em;
+  transition: fill var(--transition-base);
+}
+
+.assembly-svg__spine {
+  stroke: var(--tech-line);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 6;
+}
+
+.assembly-svg__note {
+  fill: var(--text-muted);
+  font-size: 20px;
+  letter-spacing: 0.12em;
+}
+
+/* Активный этап: узел и связь окрашиваются терракотой */
+.assembly-svg__stage[data-active='true'] .assembly-svg__pulse {
+  opacity: 1;
+}
+
+.assembly-svg__stage[data-active='true'] .assembly-svg__node {
+  fill: var(--accent);
+  stroke: var(--accent);
+}
+
+.assembly-svg__stage[data-active='true'] .assembly-svg__glyph {
+  stroke: var(--accent-contrast);
+}
+
+.assembly-svg__stage[data-active='true'] .assembly-svg__tag {
+  fill: var(--accent);
+}
+
+.assembly-svg__stage[data-active='true'] .assembly-svg__label {
+  fill: var(--text-primary);
+}
+
+.assembly-svg__stage[data-active='true'] .assembly-svg__leader {
+  stroke: var(--accent);
+}
+
+.assembly-svg__stage[data-active='true'] .assembly-svg__port {
+  fill: var(--accent);
+  stroke: var(--accent);
+}
+
+/* ==========================================================================
+   Адаптив
+   ========================================================================== */
+
+/* --- Планшеты: консоль перестраивается в одну колонку --------------------- */
+
+@media (max-width: 1023px) {
+  .assembly__head {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+    align-items: start;
+  }
+
+  .assembly__lede {
+    max-width: 46ch;
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .assembly__console {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+
+  /* Этапы выстраиваются в вертикальный список с крупными строками */
+  .assembly__stage-list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+
+  .assembly__stage {
+    display: grid;
+    grid-template-columns: 1.75rem minmax(0, 1fr) 0.5rem;
+    align-items: center;
+    column-gap: var(--space-3);
+    min-height: 3.5rem;
+    padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
+  }
+
+  .assembly__stage-mark {
+    justify-self: end;
+    margin-top: 0;
+  }
+}
+
+/* --- Телефоны: вертикальная схема и компактный ритм ----------------------- */
+
+@media (max-width: 767px) {
+  .assembly {
+    padding-block: var(--section-space-sm);
+  }
+
+  .assembly__title {
+    font-size: clamp(1.75rem, 1.1rem + 3vw, 2.25rem);
+  }
+
+  .assembly-svg--radial {
+    display: none;
+  }
+
+  .assembly-svg--vertical {
+    display: block;
+  }
+
+  .assembly__params {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .assembly__footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .assembly__footer-index {
+    margin-left: 0;
+  }
+}
+
+/* --- 320–479: компактные подписи ----------------------------------------- */
+
+@media (max-width: 479px) {
+  .assembly__top-index {
+    display: none;
+  }
+
+  .assembly__top-label {
+    font-size: var(--fs-micro);
+    letter-spacing: 0.1em;
+  }
+
+  .assembly__title {
+    font-size: clamp(1.625rem, 1.1rem + 2.8vw, 2.125rem);
+  }
+
+  .assembly__sheet-head,
+  .assembly__legend {
+    letter-spacing: 0.05em;
+  }
+
+  .assembly__sheet-body {
+    padding: var(--space-1);
+  }
+
+  .assembly__readout-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* --- Уважение к настройке «меньше движения» ------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .assembly__stage,
+  .assembly__stage::before,
+  .assembly__stage-index,
+  .assembly__stage-mark,
+  .assembly-svg__node,
+  .assembly-svg__glyph,
+  .assembly-svg__tag,
+  .assembly-svg__label,
+  .assembly-svg__leader,
+  .assembly-svg__port,
+  .assembly-svg__pulse {
+    transition: none;
+  }
+
+  /* Смена этапа остаётся мгновенной: короткий keyframe-проявляющийся переход
+     описания отключён так же, как в Quality. */
+  .assembly__swap {
+    animation: none;
+  }
+}

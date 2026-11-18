@@ -1,0 +1,458 @@
+/* ==========================================================================
+   Contact — финальная секция «Есть идея?»
+   --------------------------------------------------------------------------
+   Графитовый экран, замыкающий сайт: крупная типографика Playfair Display,
+   терракотовый акцент, крупная CTA-кнопка и инженерный чертёж финальной сборки.
+   Токены — в styles/variables.css; локальные значения собраны в --contact-*.
+   ========================================================================== */
+
+.contact {
+  --contact-grid-line: rgba(240, 237, 229, 0.05);
+  --contact-column-gap: clamp(1.5rem, 3vw, 3.5rem);
+
+  overflow: clip;
+  padding-block: var(--section-space);
+  color: var(--text-inverse);
+  background-color: var(--surface-inverse-alt);
+  background-image:
+    linear-gradient(var(--contact-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--contact-grid-line) 1px, transparent 1px);
+  background-size: 96px 96px;
+}
+
+.contact__frame {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+/* --- Верхняя техническая строка ------------------------------------------ */
+
+.contact__top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.contact__top-mark {
+  flex: none;
+  width: clamp(1.25rem, 3vw, 2.5rem);
+  height: var(--line-1);
+  background-color: var(--accent);
+}
+
+.contact__top-label,
+.contact__top-index {
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-caption);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-inverse-muted);
+}
+
+.contact__top-rule {
+  flex: 1 1 auto;
+  height: var(--line-1);
+  background-color: var(--border-inverse);
+}
+
+.contact__top-index {
+  flex: none;
+  white-space: nowrap;
+}
+
+/* --- Заголовок и лид ------------------------------------------------------ */
+
+.contact__head {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: var(--contact-column-gap);
+  align-items: end;
+  margin-top: clamp(1.75rem, 3.5vw, 3rem);
+}
+
+.contact__title {
+  font-size: clamp(2.5rem, 1.4rem + 4.4vw, 5.5rem);
+  line-height: 1.02;
+  letter-spacing: var(--ls-display);
+  text-wrap: balance;
+}
+
+.contact__title-line {
+  display: block;
+}
+
+.contact__title-accent {
+  color: var(--color-terracotta);
+}
+
+.contact__lede {
+  max-width: 34ch;
+  padding-left: clamp(1rem, 2vw, 2rem);
+  border-left: var(--line-1) solid var(--border-inverse);
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  color: var(--text-inverse-muted);
+  text-wrap: pretty;
+}
+
+/* --- Тело: CTA + чертёж --------------------------------------------------- */
+
+.contact__body {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--contact-column-gap);
+  align-items: start;
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+/* --- CTA ------------------------------------------------------------------ */
+
+.contact__cta {
+  display: grid;
+  gap: var(--space-4);
+  align-content: start;
+}
+
+.contact__cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  width: 100%;
+  min-height: 3.75rem;
+  padding: var(--space-4) var(--space-6);
+  background-color: var(--accent);
+  /* Графит на терракоте — 4.97:1: подпись (17–20 px, 600) не попадает в
+     «крупный текст» с порогом 3:1, поэтому off-white (--accent-contrast)
+     давал здесь недопустимые 2.99:1. Терракотовый фон сохранён, меняется
+     только цвет подписи — тот же приём, что у .hero__cta. */
+  color: var(--surface-inverse);
+  border: var(--line-1) solid var(--accent);
+  font-family: var(--font-body);
+  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.01em;
+  text-align: left;
+  transition:
+    background-color var(--transition-base),
+    border-color var(--transition-base),
+    transform var(--transition-base);
+}
+
+.contact__cta-arrow {
+  flex: none;
+  /* Стрелка декоративная (aria-hidden), но по контрасту считается как текст:
+     наследует цвет подписи — графит на --accent даёт 4.97:1, с запасом и для
+     порога крупного текста (3:1), и для обычного (4.5:1). */
+  color: inherit;
+  font-size: max(1.25em, 1.5rem);
+  line-height: 1;
+  transition: transform var(--transition-base);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .contact__cta-button:hover {
+    /* Подпись тёмная, поэтому hover подсвечивает подложку (а не затемняет её,
+       как было при светлой подписи): 78 % терракоты + 22 % off-white даёт под
+       графитом 6.4:1. Прежняя смесь с --color-graphite-dark опускала контраст
+       подписи до 3.99:1 и ломала AA. */
+    background-color: color-mix(in srgb, var(--accent) 78%, var(--color-off-white));
+    border-color: color-mix(in srgb, var(--accent) 78%, var(--color-off-white));
+    transform: translateY(-1px);
+  }
+
+  .contact__cta-button:hover .contact__cta-arrow {
+    transform: translateX(0.25rem);
+  }
+}
+
+.contact__cta-button:focus-visible {
+  outline-color: var(--text-inverse);
+  outline-offset: 3px;
+}
+
+.contact__cta-status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  line-height: var(--lh-caption);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-inverse-muted);
+}
+
+.contact__cta-status-dot {
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-muted);
+}
+
+.contact__placeholder {
+  padding: var(--space-4);
+  border-left: var(--line-2) solid var(--accent);
+  background-color: rgba(240, 237, 229, 0.06);
+  font-size: var(--fs-small);
+  line-height: 1.55;
+  color: var(--text-inverse);
+}
+
+.contact__placeholder[hidden] {
+  display: none;
+}
+
+/* --- Чертёж --------------------------------------------------------------- */
+
+.contact__drawing {
+  min-width: 0;
+  margin: 0;
+}
+
+.contact__drawing-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: var(--line-1) solid var(--border-inverse);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  line-height: var(--lh-caption);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-inverse-muted);
+}
+
+.contact__drawing-body {
+  margin-top: var(--space-4);
+  padding: clamp(0.5rem, 1.5vw, 1rem);
+  border: var(--line-1) solid var(--border-inverse);
+}
+
+.contact__drawing-caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  margin-top: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  line-height: var(--lh-caption);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-inverse-muted);
+}
+
+.contact__drawing-caption-arrow {
+  /* На графите: --accent давал 4.34:1 (AA — от 4.5:1) */
+  color: var(--text-accent-on-dark);
+}
+
+/* ==========================================================================
+   SVG-чертёж
+   ========================================================================== */
+
+.contact-drawing {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.contact-drawing :is(line, path, rect, circle, polygon) {
+  vector-effect: non-scaling-stroke;
+}
+
+.contact-drawing text {
+  font-family: var(--font-mono);
+}
+
+/* Координатная сетка */
+.contact-drawing__grid-path {
+  fill: none;
+  stroke: rgba(240, 237, 229, 0.05);
+  stroke-width: 1;
+}
+
+/* Оси координат */
+.contact-drawing__axes line {
+  stroke: var(--color-drawing-blue-48);
+  stroke-width: 1;
+  stroke-dasharray: 6 6;
+}
+
+.contact-drawing__axes text {
+  fill: var(--color-drawing-blue);
+  font-size: 15px;
+  letter-spacing: 0.06em;
+}
+
+/* Каркас формы */
+.contact-drawing__form path {
+  fill: none;
+  stroke: var(--color-off-white-64);
+  stroke-width: 1.25;
+}
+
+.contact-drawing__form .contact-drawing__form--ghost {
+  stroke: var(--color-drawing-blue-48);
+  stroke-width: 1;
+  stroke-dasharray: 5 5;
+}
+
+/* Штриховка боковой грани */
+.contact-drawing__hatch {
+  stroke: var(--color-drawing-blue-48);
+  stroke-width: 1;
+}
+
+.contact-drawing__hatch-line {
+  stroke: var(--color-drawing-blue-48);
+  stroke-width: 0.75;
+}
+
+/* Окружность радиуса */
+.contact-drawing__radius {
+  fill: none;
+  stroke: var(--color-drawing-blue-48);
+  stroke-width: 1;
+  stroke-dasharray: 4 5;
+}
+
+/* Линия сечения */
+.contact-drawing__section line {
+  stroke: var(--color-drawing-blue);
+  stroke-width: 1;
+  stroke-dasharray: 10 6;
+}
+
+.contact-drawing__section text {
+  fill: var(--color-drawing-blue);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+
+/* Идея: траектория и узел */
+.contact-drawing__highlight line {
+  stroke: var(--accent);
+  stroke-width: 1.25;
+  stroke-dasharray: 5 5;
+}
+
+.contact-drawing__origin {
+  fill: var(--accent);
+  stroke: none;
+}
+
+.contact-drawing__question {
+  fill: var(--accent);
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.contact-drawing__node {
+  fill: var(--accent);
+  stroke: var(--accent-contrast);
+  stroke-width: 2;
+}
+
+/* Размеры */
+.contact-drawing__dimensions line {
+  stroke: var(--color-off-white-64);
+  stroke-width: 0.75;
+}
+
+.contact-drawing__dimensions .contact-drawing__tick {
+  stroke-width: 0.75;
+}
+
+.contact-drawing__dimensions text {
+  fill: var(--color-off-white-64);
+  font-size: 15px;
+  letter-spacing: 0.04em;
+}
+
+/* Технические обозначения */
+.contact-drawing__annotations text {
+  fill: var(--color-off-white-64);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+}
+
+/* ==========================================================================
+   Адаптив
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+  .contact__head {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+    align-items: start;
+  }
+
+  .contact__lede {
+    max-width: 46ch;
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .contact__body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .contact {
+    padding-block: var(--section-space-sm);
+  }
+
+  .contact__title {
+    font-size: clamp(2rem, 1.2rem + 4vw, 3rem);
+  }
+
+  .contact__cta-button {
+    min-height: 3.5rem;
+  }
+
+  .contact__drawing-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .contact__drawing-caption {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 479px) {
+  .contact__top-index {
+    display: none;
+  }
+
+  .contact__top-label {
+    font-size: var(--fs-micro);
+    letter-spacing: 0.1em;
+  }
+
+  .contact__title {
+    font-size: clamp(1.75rem, 1.15rem + 3.4vw, 2.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact__cta-button,
+  .contact__cta-arrow {
+    transition: none;
+  }
+}

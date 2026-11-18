@@ -1,0 +1,461 @@
+/* ==========================================================================
+   Hero — «Инженеры впечатлений»
+   Обложка-«чертёжный лист»: типографика слева, фасад Эрмитажа справа.
+   Токены — src/styles/variables.css; локальные значения помечены комментарием.
+   ========================================================================== */
+
+.hero {
+  /* Ширина терракотового маркера надзаголовка: к ней привязан отступ
+     акцентной строки заголовка, поэтому обе «технические» метки
+     начинаются на одной оси с основным текстом */
+  --hero-mark-width: clamp(1.25rem, 3vw, 2.5rem);
+  /* Производная от --color-drawing-blue: в токенах нет настолько слабой альфы */
+  --hero-grid-line: rgba(155, 175, 179, 0.06);
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100svh;
+  /* Верхний отступ считается от общей высоты шапки (--header-height),
+     поэтому зазор между Header и надзаголовком не «плавает» */
+  padding-top: calc(var(--header-height) + clamp(0.75rem, 2vh, 2rem));
+  padding-bottom: clamp(1rem, 2vh, 1.75rem);
+  overflow: clip;
+  color: var(--text-inverse);
+  background-color: var(--surface-inverse);
+  background-image:
+    linear-gradient(var(--hero-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--hero-grid-line) 1px, transparent 1px);
+  background-size: 96px 96px;
+}
+
+.hero__frame {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3vh, 2.5rem);
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+.hero__grid {
+  display: grid;
+  flex: 1 1 auto;
+  /* Чертежу отдаётся фиксированная «полка» ширины: он растёт вместе с
+     экраном, но не спорит с набором заголовка */
+  grid-template-columns: minmax(0, 1fr) minmax(0, clamp(25rem, 34vw, 33rem));
+  align-items: center;
+  gap: clamp(1.5rem, 2.4vw, 3.5rem);
+}
+
+/* --- Левая колонка ------------------------------------------------------- */
+
+.hero__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(0.875rem, 1.6vh, 1.25rem);
+  min-width: 0;
+}
+
+
+.hero__eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-caption);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-tech);
+}
+
+.hero__eyebrow-mark {
+  flex: none;
+  width: var(--hero-mark-width);
+  height: var(--line-1);
+  background-color: var(--color-terracotta);
+}
+
+.hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 0.85rem + 3.9vw, 4.25rem);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  color: var(--text-inverse);
+  overflow-wrap: break-word;
+}
+
+.hero__title-line {
+  display: block;
+}
+
+/* Акцентная строка начинается там же, где текст надзаголовка:
+   отступ = маркер + его разрыв. Прежние «случайные» 0.5–2.5rem убраны. */
+.hero__title-line--offset {
+  padding-left: calc(var(--hero-mark-width) + var(--space-3));
+}
+
+.hero__title-accent {
+  color: var(--text-accent);
+}
+
+.hero__lede {
+  max-width: 46ch;
+  font-family: var(--font-body);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-lead);
+  color: var(--text-inverse-muted);
+  text-wrap: pretty;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(1rem, 2.5vw, 2rem);
+  margin-top: clamp(0.5rem, 1.5vh, 1.25rem);
+}
+
+.hero__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0 clamp(1.25rem, 3vw, 2.5rem);
+  border: var(--line-1) solid var(--surface-accent);
+  border-radius: var(--radius-none);
+  background-color: var(--surface-accent);
+  /* Графит на терракоте — 5.1:1 (WCAG AA). Off-white давал только 3.0:1,
+     поэтому терракотовый фон сохранён, а цвет текста взят инверсный тёмный. */
+  color: var(--surface-inverse);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.hero__cta:hover {
+  border-color: var(--surface-accent);
+  background-color: transparent;
+  color: var(--text-inverse);
+}
+
+.hero__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding-block: var(--space-2);
+  border-bottom: var(--line-1) solid var(--border-inverse);
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-inverse-muted);
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.hero__link:hover {
+  border-color: var(--surface-accent);
+  color: var(--text-inverse);
+}
+
+/* --- Правая колонка: чертёж ---------------------------------------------- */
+
+.hero__drawing {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+  margin: 0;
+}
+
+.hero__caption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  padding-bottom: var(--space-2);
+  border-bottom: var(--line-1) solid var(--border-inverse);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  line-height: var(--lh-caption);
+  letter-spacing: var(--ls-micro);
+  text-transform: uppercase;
+  color: var(--text-inverse-muted);
+}
+
+.hero__caption-meta {
+  color: var(--text-tech);
+}
+
+.hero-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 640 / 780;
+  color: var(--text-tech);
+}
+
+/* Все штрихи остаются 1px при любом масштабе — свойство чертёжного листа */
+.hero-svg :is(line, path, rect, circle) {
+  vector-effect: non-scaling-stroke;
+}
+
+.hero-svg__grid line {
+  stroke: var(--grid-line);
+  stroke-width: 1;
+  stroke-dasharray: 2 10;
+  opacity: 0.5;
+}
+
+.hero-svg__paper {
+  fill: var(--surface-inverse);
+  stroke: none;
+}
+
+.hero-svg__lines,
+.hero-svg__windows {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+}
+
+.hero-svg__windows {
+  fill: var(--color-graphite);
+  stroke-linejoin: miter;
+}
+
+.hero-svg__strong {
+  stroke-width: 1.5;
+}
+
+.hero-svg__detail {
+  opacity: 0.5;
+}
+
+.hero-svg__axis {
+  fill: none;
+  stroke: var(--color-terracotta);
+  stroke-width: 1;
+  stroke-dasharray: 14 4 2 4;
+  opacity: 0.85;
+}
+
+.hero-svg__node {
+  fill: var(--surface-inverse);
+  stroke: var(--color-terracotta);
+  stroke-width: 1;
+}
+
+.hero-svg__dim {
+  fill: none;
+  stroke: var(--color-drawing-blue-48);
+  stroke-width: 1;
+}
+
+.hero-svg__dim-tick {
+  stroke: var(--color-drawing-blue-48);
+  stroke-width: 1;
+}
+
+.hero-svg__label {
+  fill: var(--text-tech);
+  font-family: var(--font-mono);
+  /* Подписи читаются при масштабировании чертежа (было 9.5px —
+     на экране это давало ~6px). Отдельный адаптивный набор: на узких
+     экранах подписи скрываются, на широких — показываются целиком. */
+  font-size: 18px;
+  font-weight: var(--fw-medium);
+  letter-spacing: 1.2px;
+}
+
+.hero-svg__label--accent {
+  fill: var(--color-terracotta);
+}
+
+
+/* --- Нижняя техническая полоса ------------------------------------------- */
+
+.hero__meta {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  padding-top: var(--space-4);
+  border-top: var(--line-1) solid var(--border-inverse);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  line-height: var(--lh-caption);
+  letter-spacing: var(--ls-micro);
+  text-transform: uppercase;
+  color: var(--text-inverse-muted);
+}
+
+.hero__meta-item {
+  padding-inline: var(--space-4);
+  border-left: var(--line-1) solid var(--border-inverse);
+}
+
+.hero__meta-item:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.hero__meta-item--accent {
+  color: var(--text-accent);
+}
+
+/* --- Desktop: вертикальная линия между текстом и чертежом ---------------- */
+
+@media (min-width: 1024px) {
+  .hero__drawing {
+    padding-left: clamp(1rem, 1.8vw, 2rem);
+    border-left: var(--line-1) solid var(--border-inverse);
+  }
+}
+
+/* Широкие экраны: чертёж получает больше площади, пустоты вокруг меньше */
+@media (min-width: 1600px) {
+  .hero__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 36rem);
+    gap: clamp(2rem, 2.4vw, 3.5rem);
+  }
+}
+
+/* --- Tablet: одна колонка, чертёж в отдельной рамке ---------------------
+   Фасад больше не «свисает» в пустоту под текстом: у него свой лист
+   с рамкой, подписью сверху и ограниченной шириной. --------------------- */
+
+@media (max-width: 1023px) {
+  .hero__grid {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .hero__drawing {
+    width: 100%;
+    max-width: min(100%, 24rem);
+    justify-self: center;
+    padding: var(--space-3) var(--space-3) var(--space-4);
+    border: var(--line-1) solid var(--border-inverse);
+    background-color: var(--surface-inverse-alt);
+  }
+
+  .hero__drawing .hero__caption {
+    border-bottom-color: var(--tech-line);
+  }
+}
+
+/* Невысокие планшеты (в т.ч. альбомная ориентация): лист уменьшается,
+   чтобы рамка чертежа целиком попадала в первый экран */
+@media (max-width: 1023px) and (max-height: 940px) {
+  .hero__drawing {
+    max-width: min(100%, 20rem);
+  }
+}
+
+/* --- Mobile: компактный вертикальный ритм -------------------------------- */
+
+@media (max-width: 767px) {
+  .hero {
+    padding-top: calc(var(--header-height) + 0.5rem);
+    padding-bottom: var(--space-4);
+  }
+
+  .hero__frame {
+    gap: var(--space-4);
+  }
+
+  .hero__intro {
+    gap: var(--space-3);
+  }
+
+  /* Заголовок, лид и CTA должны укладываться в первый экран 360–390px */
+  .hero__title {
+    font-size: clamp(1.75rem, 1rem + 3.2vw, 2.375rem);
+  }
+
+  .hero__meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: var(--space-2);
+  }
+
+  .hero__meta-item {
+    padding-inline: var(--space-3);
+  }
+
+  .hero__meta-item:nth-child(odd) {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
+@media (max-width: 479px) {
+  .hero__eyebrow {
+    font-size: var(--fs-micro);
+    letter-spacing: 0.1em;
+  }
+
+  .hero__actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: var(--space-2);
+  }
+
+  .hero__cta {
+    width: 100%;
+  }
+
+  .hero__link {
+    align-self: flex-start;
+  }
+
+  /* Узкие экраны: чертёж компактнее, чтобы первый экран
+     заканчивался целым листом, а не обрезанным фасадом */
+  .hero__drawing {
+    max-width: min(100%, 16.5rem);
+    gap: var(--space-2);
+    padding: var(--space-2);
+  }
+}
+
+/* --- Мелкий лист: подписи скрыты, фасад крупнее -------------------------- */
+/* При таком масштабе подписи и размерные линии SVG читаются как случайный
+   шум, поэтому остаётся только фасад, а освободившееся поле отдаётся ему */
+
+@media (max-width: 479px), (max-width: 1023px) and (max-height: 940px) {
+  .hero-svg__annotations {
+    display: none;
+  }
+
+  .hero-svg > :not(.hero-svg__annotations) {
+    transform-box: view-box;
+    transform-origin: 320px 380px;
+    transform: scale(1.16);
+  }
+}
+
+/* --- Движение: только изменение цвета, без анимаций --------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__cta,
+  .hero__link {
+    transition: none;
+  }
+}
+
+

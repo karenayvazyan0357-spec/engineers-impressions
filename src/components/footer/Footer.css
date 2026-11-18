@@ -1,0 +1,175 @@
+/* ==========================================================================
+   Footer — завершение сайта
+   --------------------------------------------------------------------------
+   Тёмный подвал, замыкающий страницу: логотип, навигация по реальным якорям
+   секций, кнопка возврата наверх, техническая маркировка и год из Date.
+   Токены — в styles/variables.css; золотой верхний бордер рифмуется с шапкой.
+   ========================================================================== */
+
+.site-footer {
+  color: var(--text-inverse);
+  background-color: var(--surface-inverse);
+  border-top: var(--line-1) solid var(--color-gold-muted);
+}
+
+.site-footer__frame {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-block: var(--space-8) var(--space-6);
+  padding-inline: var(--container-padding);
+}
+
+.site-footer__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-6) var(--space-8);
+}
+
+/* --- Логотип -------------------------------------------------------------- */
+
+.site-footer__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.site-footer__logo {
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.site-footer__logo-frame {
+  fill: none;
+  stroke: var(--color-gold);
+  stroke-width: 2;
+}
+
+.site-footer__logo-core {
+  fill: none;
+  stroke: var(--surface-accent);
+  stroke-width: 1;
+}
+
+.site-footer__brand-text {
+  font-family: var(--font-main);
+  font-size: clamp(0.9375rem, 0.7rem + 0.75vw, 1.2rem);
+  font-weight: var(--fw-bold);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--color-gold);
+  white-space: nowrap;
+}
+
+/* --- Навигация ------------------------------------------------------------ */
+
+.site-footer__nav-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(0.25rem, 1.2vw, 1.25rem);
+}
+
+.site-footer__nav-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding-inline: var(--space-3);
+  border-bottom: var(--line-1) solid transparent;
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.04em;
+  color: var(--text-inverse-muted);
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.site-footer__nav-link:hover,
+.site-footer__nav-link:focus-visible {
+  color: var(--text-inverse);
+  border-bottom-color: var(--surface-accent);
+}
+
+/* --- Кнопка возврата наверх ----------------------------------------------- */
+
+.site-footer__top-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 2.75rem;
+  padding-inline: var(--space-4);
+  border: var(--line-1) solid var(--border-inverse);
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-inverse-muted);
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.site-footer__top-btn:hover,
+.site-footer__top-btn:focus-visible {
+  color: var(--text-inverse);
+  border-color: var(--surface-accent);
+}
+
+.site-footer__top-btn-arrow {
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+/* --- Нижняя линия и подписи ------------------------------------------------ */
+
+.site-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  margin-top: var(--space-8);
+  padding-top: var(--space-4);
+  border-top: var(--line-1) solid var(--border-inverse);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  line-height: var(--lh-caption);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-inverse-muted);
+}
+
+/* ==========================================================================
+   Адаптив
+   ========================================================================== */
+
+@media (max-width: 767px) {
+  .site-footer__top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  .site-footer__nav-list {
+    gap: 0.25rem;
+  }
+
+  .site-footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-footer__nav-link,
+  .site-footer__top-btn {
+    transition: none;
+  }
+}

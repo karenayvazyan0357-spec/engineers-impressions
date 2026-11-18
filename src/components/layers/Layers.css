@@ -1,0 +1,723 @@
+/* ==========================================================================
+   Layers — «Впечатление — это система»
+   --------------------------------------------------------------------------
+   Редакционная секция: техническая строка, заголовок с лидом, слева список
+   направлений (5 колонок), справа чертёжная панель (7 колонок), внизу
+   итоговая подпись. Токены — styles/variables.css; всё локальное собрано
+   в --layers-*.
+   ========================================================================== */
+
+.layers {
+  /* Терракота в мелком тексте не проходит по контрасту, поэтому акцентный
+     «чернильный» оттенок получается смешением с графитом. Первое значение —
+     фолбэк для браузеров без color-mix().
+     68 % (а не 72 %) — чтобы держать запас по AA: 72 % давали на бумаге
+     4.497:1, 68 % дают 4.76:1. */
+  --layers-accent-ink: var(--color-terracotta);
+  --layers-accent-ink: color-mix(in srgb, var(--color-terracotta) 68%, var(--color-graphite));
+  --layers-column-gap: clamp(1.5rem, 3vw, 3.5rem);
+  --layers-panel-gap: clamp(1.25rem, 2.2vw, 2rem);
+
+  padding-block: var(--section-space);
+  color: var(--text-primary);
+  background-color: var(--surface-page);
+}
+
+.layers__frame {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+/* --- Верхняя техническая строка ------------------------------------------ */
+
+.layers__top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.layers__top-mark {
+  flex: none;
+  width: clamp(1.25rem, 3vw, 2.5rem);
+  height: var(--line-1);
+  background-color: var(--accent);
+}
+
+.layers__top-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-caption);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.layers__top-rule {
+  flex: 1 1 auto;
+  height: var(--line-1);
+  background-color: var(--border-default);
+}
+
+/* --- Заголовок и лид ------------------------------------------------------ */
+
+.layers__head {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--layers-column-gap);
+  align-items: end;
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.layers__title {
+  font-size: clamp(1.875rem, 1.2rem + 2.6vw, 3.5rem);
+  letter-spacing: var(--ls-display);
+  text-wrap: balance;
+}
+
+.layers__title-accent {
+  color: var(--layers-accent-ink);
+}
+
+.layers__lede {
+  max-width: 46ch;
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+/* --- Основная область: список и панель ----------------------------------- */
+
+.layers__body {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: start;
+  gap: var(--layers-column-gap);
+  margin-top: clamp(2rem, 4vw, 3.5rem);
+}
+
+/* --- Слева: направления --------------------------------------------------- */
+
+.layers__nav {
+  min-width: 0;
+}
+
+.layers__nav-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: var(--line-1) solid var(--border-strong);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-micro);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.layers__nav-range {
+  color: var(--layers-accent-ink);
+}
+
+.layers__nav-list {
+  display: block;
+}
+
+.layers__option {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) 0.5rem;
+  align-items: center;
+  column-gap: var(--space-3);
+  width: 100%;
+  min-height: 3.5rem;
+  padding: clamp(0.75rem, 1.3vw, 1rem) var(--space-3) clamp(0.75rem, 1.3vw, 1rem)
+    var(--space-4);
+  border-bottom: var(--line-1) solid var(--border-default);
+  text-align: left;
+  color: var(--text-secondary);
+  transition:
+    background-color var(--transition-base),
+    color var(--transition-base);
+}
+
+/* Активный маркер — вертикальная линия в левом жёлобе строки */
+.layers__option::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: var(--line-2);
+  background-color: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top center;
+  transition: transform var(--transition-base);
+}
+
+.layers__option-index {
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  transition: color var(--transition-base);
+}
+
+.layers__option-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.0625rem, 0.95rem + 0.5vw, 1.375rem);
+  line-height: 1.15;
+  letter-spacing: var(--ls-heading);
+  overflow-wrap: break-word;
+}
+
+.layers__option-mark {
+  justify-self: end;
+  width: 0.4375rem;
+  height: 0.4375rem;
+  border: var(--line-1) solid var(--tech-line);
+  transition:
+    background-color var(--transition-base),
+    border-color var(--transition-base);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .layers__option:hover {
+    background-color: var(--color-graphite-08);
+    color: var(--text-primary);
+  }
+
+  .layers__option:hover .layers__option-index {
+    color: var(--text-primary);
+  }
+}
+
+/* Выбранное направление видно без наведения: заливка строки, терракотовый
+   рельс, акцентный номер и заполненный маркер */
+.layers__option[aria-pressed='true'] {
+  background-color: var(--accent-muted);
+  color: var(--text-primary);
+}
+
+.layers__option[aria-pressed='true']::before {
+  transform: scaleY(1);
+}
+
+/* Акцентный номер выбранной строки лежит на подложке --accent-muted:
+   локальный --layers-accent-ink даёт там 3.82:1 (AA требует 4.5:1),
+   поэтому используется более тёмная «чернильная» смесь (4.81:1). */
+.layers__option[aria-pressed='true'] .layers__option-index {
+  color: var(--text-accent-ink-strong);
+}
+
+.layers__option[aria-pressed='true'] .layers__option-mark {
+  border-color: var(--accent);
+  background-color: var(--accent);
+}
+
+.layers__hint {
+  max-width: 30ch;
+  margin-top: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  line-height: var(--lh-caption);
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+}
+
+/* --- Справа: панель выбранного направления -------------------------------- */
+
+.layers__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--layers-panel-gap);
+  min-width: 0;
+}
+
+.layers__scheme {
+  margin: 0;
+  border: var(--line-1) solid var(--border-strong);
+  background-color: var(--surface-page);
+}
+
+.layers__scheme-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-4);
+  padding: var(--space-3) clamp(0.75rem, 1.5vw, 1.25rem);
+  border-bottom: var(--line-1) solid var(--border-default);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  line-height: var(--lh-caption);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.layers__scheme-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-primary);
+}
+
+.layers__scheme-label::before {
+  content: '';
+  flex: none;
+  width: 0.375rem;
+  height: 0.375rem;
+  background-color: var(--accent);
+}
+
+.layers__scheme-body {
+  padding: clamp(0.5rem, 1.5vw, 1.25rem);
+}
+
+.layers__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  padding: var(--space-2) clamp(0.75rem, 1.5vw, 1.25rem) var(--space-3);
+  border-top: var(--line-1) solid var(--border-default);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  line-height: var(--lh-caption);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.layers__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.layers__legend-swatch {
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+.layers__legend-swatch--accent {
+  background-color: var(--accent);
+}
+
+.layers__legend-swatch--tech {
+  border: var(--line-1) solid var(--color-drawing-blue);
+}
+
+/* --- Описание выбранного направления -------------------------------------- */
+
+.layers__spec-title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2.125rem);
+}
+
+.layers__spec-index {
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.08em;
+  color: var(--layers-accent-ink);
+}
+
+.layers__spec-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(1rem, 2vw, 2rem);
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: var(--line-1) solid var(--border-default);
+}
+
+.layers__desc {
+  max-width: 40ch;
+  font-size: var(--fs-body);
+  line-height: 1.55;
+  color: var(--text-secondary);
+  text-wrap: pretty;
+}
+
+.layers__scope {
+  padding-left: clamp(1rem, 2vw, 1.75rem);
+  border-left: var(--line-1) solid var(--border-default);
+}
+
+.layers__scope-label {
+  margin-bottom: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.layers__scope-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.layers__scope-item {
+  position: relative;
+  padding-left: var(--space-4);
+  font-size: var(--fs-small);
+  line-height: 1.45;
+  color: var(--text-primary);
+  text-wrap: pretty;
+}
+
+.layers__scope-item::before {
+  content: '';
+  position: absolute;
+  top: 0.6em;
+  left: 0;
+  width: 0.375rem;
+  height: var(--line-1);
+  background-color: var(--accent);
+}
+
+/* --- Нижняя техническая строка -------------------------------------------- */
+
+.layers__footer {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--space-2) var(--layers-column-gap);
+  margin-top: clamp(2rem, 4vw, 3.5rem);
+  padding-top: var(--space-4);
+  border-top: var(--line-1) solid var(--border-strong);
+}
+
+.layers__footer-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-micro);
+  text-transform: uppercase;
+  color: var(--layers-accent-ink);
+}
+
+.layers__footer-label::before {
+  content: '';
+  flex: none;
+  width: clamp(1.25rem, 3vw, 2.5rem);
+  height: var(--line-1);
+  background-color: var(--accent);
+}
+
+.layers__footer-text {
+  max-width: 56ch;
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* --- Смена состояния: короткая проявляющаяся смена листа ------------------ */
+
+@keyframes layers-swap {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.layers__swap {
+  animation: layers-swap var(--duration-slow) var(--ease-out) both;
+}
+
+/* ==========================================================================
+   Чертёжная схема
+   Штрихи не масштабируются вместе с листом (vector-effect): толщина линии
+   остаётся инженерной при любой ширине панели.
+   ========================================================================== */
+
+.layers-drawing {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 640 / 460;
+}
+
+.layers-drawing :is(line, path, rect, circle) {
+  vector-effect: non-scaling-stroke;
+}
+
+.layers-drawing__grid line {
+  stroke: var(--grid-line);
+  stroke-width: 1;
+  stroke-dasharray: 2 10;
+  opacity: 0.55;
+}
+
+.layers-drawing__frame {
+  fill: none;
+  stroke: var(--tech-line);
+  stroke-width: 1;
+}
+
+.layers-drawing__marks path {
+  fill: none;
+  stroke: var(--tech-line);
+  stroke-width: 1;
+}
+
+.layers-drawing__guide {
+  fill: none;
+  stroke: var(--color-drawing-blue);
+  stroke-width: 1;
+  opacity: 0.8;
+}
+
+.layers-drawing__guide-dash {
+  fill: none;
+  stroke: var(--tech-line);
+  stroke-width: 1;
+  stroke-dasharray: 6 6;
+}
+
+.layers-drawing__tick {
+  stroke: var(--tech-line);
+  stroke-width: 1;
+}
+
+.layers-drawing__tick--accent {
+  stroke: var(--accent);
+}
+
+.layers-drawing__links line {
+  stroke: var(--color-drawing-blue);
+  stroke-width: 1;
+  opacity: 0.9;
+}
+
+.layers-drawing__rules line {
+  stroke: var(--color-drawing-blue);
+  stroke-width: 1;
+  opacity: 0.45;
+}
+
+.layers-drawing__area {
+  fill: var(--accent-muted);
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+
+.layers-drawing__accent {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+
+.layers-drawing__accent-thin {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1;
+}
+
+.layers-drawing__accent-bar {
+  fill: var(--accent);
+  stroke: none;
+}
+
+.layers-drawing__block {
+  fill: var(--surface-page);
+  stroke: var(--color-drawing-blue);
+  stroke-width: 1;
+}
+
+.layers-drawing__block--accent {
+  fill: var(--accent-muted);
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+
+.layers-drawing__node {
+  fill: var(--surface-page);
+  stroke: var(--color-drawing-blue);
+  stroke-width: 1.25;
+}
+
+.layers-drawing__accent-fill {
+  fill: var(--accent);
+  stroke: none;
+}
+
+.layers-drawing__dot {
+  fill: var(--accent);
+  stroke: none;
+}
+
+.layers-drawing__marker {
+  fill: none;
+  stroke: var(--tech-line);
+  stroke-width: 1.25;
+}
+
+.layers-drawing__chevron {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.25;
+}
+
+.layers-drawing__arrow {
+  fill: var(--accent);
+  stroke: none;
+}
+
+.layers-drawing__pixel {
+  fill: var(--tech-line);
+  stroke: none;
+}
+
+.layers-drawing__pixel--accent {
+  fill: var(--accent);
+}
+
+.layers-drawing__hatch-line {
+  stroke: var(--tech-line);
+  stroke-width: 1;
+}
+
+.layers-drawing__hatch {
+  opacity: 0.55;
+}
+
+/* ==========================================================================
+   Адаптив
+   ========================================================================== */
+
+/* --- Планшеты и десктоп: список направлений не уезжает от панели --------- */
+
+@media (min-width: 768px) {
+  .layers__nav {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-4));
+  }
+}
+
+/* --- Планшеты: та же двухколоночная логика, но компактнее ---------------- */
+
+@media (max-width: 1023px) {
+  .layers__title {
+    font-size: clamp(1.75rem, 1rem + 2.4vw, 2.5rem);
+  }
+
+  .layers__option {
+    grid-template-columns: 1.75rem minmax(0, 1fr) 0.5rem;
+    column-gap: var(--space-2);
+    padding-left: var(--space-3);
+  }
+
+  .layers__option-title {
+    font-size: clamp(1rem, 0.9rem + 0.4vw, 1.25rem);
+  }
+
+  .layers__spec-body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+
+  .layers__scope {
+    padding-top: var(--space-3);
+    padding-left: 0;
+    border-top: var(--line-1) solid var(--border-default);
+    border-left: 0;
+  }
+
+  .layers__scheme-body {
+    padding: var(--space-2);
+  }
+}
+
+/* --- Телефоны: заголовок, список, панель — вертикально -------------------- */
+
+@media (max-width: 767px) {
+  .layers {
+    padding-block: var(--section-space-sm);
+  }
+
+  .layers__head {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+    align-items: start;
+  }
+
+  .layers__title {
+    font-size: clamp(1.75rem, 1.1rem + 3vw, 2.25rem);
+  }
+
+  .layers__body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+
+  .layers__option {
+    min-height: 3.25rem;
+    padding-block: var(--space-3);
+  }
+
+  .layers__hint {
+    max-width: none;
+  }
+
+  .layers__footer {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--space-3);
+  }
+}
+
+@media (max-width: 479px) {
+  .layers__top-label {
+    font-size: var(--fs-micro);
+    letter-spacing: 0.1em;
+  }
+
+  .layers__option {
+    grid-template-columns: 1.5rem minmax(0, 1fr) 0.4375rem;
+  }
+
+  .layers__spec-title {
+    font-size: 1.5rem;
+  }
+
+  .layers__scheme-head,
+  .layers__legend {
+    letter-spacing: 0.05em;
+  }
+
+  .layers__scheme-body {
+    padding: var(--space-1);
+  }
+}
+
+/* --- Уважение к настройке «меньше движения» ------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .layers__option,
+  .layers__option::before,
+  .layers__option-index,
+  .layers__option-mark {
+    transition: none;
+  }
+
+  /* Смена направления остаётся мгновенной: новый лист проявляется без
+     проезда, но состояние списка меняется так же, как и раньше. */
+  .layers__swap {
+    animation: none;
+  }
+}

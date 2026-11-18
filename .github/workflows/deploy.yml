@@ -1,0 +1,76 @@
+# =============================================================================
+# Публикация сайта на GitHub Pages
+# -----------------------------------------------------------------------------
+# Сборка запускается на каждый push в main (и вручную из вкладки Actions).
+# Артефакт сборки — папка dist; её забирает и раздаёт официальный
+# Pages-деплой Actions, поэтому ветка gh-pages не нужна.
+#
+# В настройках репозитория должно быть выбрано:
+#   Settings → Pages → Build and deployment → Source: GitHub Actions.
+#
+# Базовый путь задан в vite.config.ts (base: '/engineers-impressions/'),
+# он же используется как префикс для всех ассетов в собранной версии.
+# =============================================================================
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Ручной запуск: удобно переопубликовать сайт без нового коммита
+  workflow_dispatch:
+
+# Минимально необходимые права: чтение репозитория, запись в Pages,
+# OIDC-токен для подтверждения источника деплоя
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Параллельные публикации не отменяют друг друга: каждый деплой доходит до конца,
+# иначе на Pages может оказаться артефакт из середины работы
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Сборка
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Node.js
+        uses: actions/setup-node@v4
+        with:
+          # LTS-ветка: Vite 8 требует Node 20.19+ / 22.12+
+          node-version: 22
+          cache: npm
+
+      - name: Зависимости
+        run: npm ci
+
+      # build = tsc -b && vite build: типы проверяются перед сборкой
+      - name: Сборка
+        run: npm run build
+
+      - name: Подготовка Pages
+        uses: actions/configure-pages@v5
+
+      - name: Артефакт
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    name: Публикация
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,220 @@
+/* ==========================================================================
+   Header — фиксированная шапка сайта
+   Контейнер повторяет геометрию .hero__frame (тот же max-width и
+   padding-inline), поэтому логотип и текстовый блок Hero стоят на одной
+   вертикальной оси. Высота — общий токен --header-height.
+   ========================================================================== */
+
+.site-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: var(--z-header);
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: var(--header-height);
+  background-color: var(--color-bg-dark);
+  border-bottom: var(--line-1) solid var(--color-gold-muted);
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+/* --- Логотип -------------------------------------------------------------- */
+
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.geometric-logo {
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+/* Цвета и толщины заданы в CSS: var() в презентационных атрибутах SVG
+   (stroke="var(--color-gold)") не работает — атрибут остаётся невалидным. */
+.geometric-logo__frame {
+  fill: none;
+  stroke: var(--color-gold);
+  stroke-width: 2;
+}
+
+.geometric-logo__core {
+  fill: none;
+  stroke: var(--surface-accent);
+  stroke-width: 1;
+}
+
+.logo-text {
+  font-family: var(--font-main);
+  font-size: clamp(0.9375rem, 0.7rem + 0.75vw, 1.2rem);
+  font-weight: var(--fw-bold);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--color-gold);
+  /* Логотип всегда в одну строку: перенос ломал высоту шапки */
+  white-space: nowrap;
+}
+
+/* --- Навигация: десктоп --------------------------------------------------- */
+
+.header-nav__list {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.25rem, 1.2vw, 1.25rem);
+}
+
+.header-nav__link {
+  display: inline-flex;
+  align-items: center;
+  /* Минимальная высота области нажатия — 44px (WCAG 2.5.5) */
+  min-height: 2.75rem;
+  padding-inline: var(--space-3);
+  border-bottom: var(--line-1) solid transparent;
+  font-family: var(--font-main);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.02em;
+  /* Пункт меню всегда в одну строку: на 769–900 px меню упирается в логотип,
+     и «О нас» переносилось на две строки, ломая базовую линию шапки */
+  white-space: nowrap;
+  /* #b49a70 на #151b1d — 6.6:1, WCAG AA для основного текста */
+  color: var(--text-gold);
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+/* Узкий десктоп: пока места мало, горизонтальные отступы пунктов уже
+   (12 → 8 px) — этого хватает, чтобы меню осталось в одну строку. */
+@media (min-width: 769px) and (max-width: 900px) {
+  .header-nav__link {
+    padding-inline: var(--space-2);
+  }
+}
+
+.header-nav__link:hover,
+.header-nav__link:focus-visible {
+  color: var(--text-inverse);
+  border-bottom-color: var(--surface-accent);
+}
+
+/* --- Кнопка мобильного меню ---------------------------------------------- */
+
+.menu-toggle {
+  display: none;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  /* 44 × 44px — минимальная область нажатия */
+  width: 2.75rem;
+  height: 2.75rem;
+  border: var(--line-1) solid var(--color-gold-muted);
+  color: var(--text-gold);
+  background-color: transparent;
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.menu-toggle:hover {
+  color: var(--text-inverse);
+  border-color: var(--color-gold);
+}
+
+.menu-toggle__bars {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  width: 1.125rem;
+}
+
+.menu-toggle__bar {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background-color: currentColor;
+  transition: transform var(--transition-fast);
+}
+
+.menu-toggle.is-open .menu-toggle__bar:first-child {
+  transform: translateY(3.5px) rotate(45deg);
+}
+
+.menu-toggle.is-open .menu-toggle__bar:last-child {
+  transform: translateY(-3.5px) rotate(-45deg);
+}
+
+/* --- Мобильная и планшетная шапка: бургер и панель ------------------------ */
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: inline-flex;
+  }
+
+  .header-nav {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    max-height: calc(100svh - var(--header-height) - var(--space-4));
+    padding: var(--space-2) var(--container-padding) var(--space-4);
+    overflow-y: auto;
+    background-color: var(--color-bg-dark);
+    border-bottom: var(--line-1) solid var(--color-gold-muted);
+    opacity: 0;
+    /* visibility убирает ссылки из табуляции, пока панель закрыта */
+    visibility: hidden;
+    transform: translateY(-0.5rem);
+    transition:
+      opacity var(--transition-fast),
+      transform var(--transition-fast),
+      visibility var(--transition-fast);
+  }
+
+  .header-nav.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .header-nav__list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .header-nav__link {
+    /* В панели строка меню — 48px */
+    min-height: 3rem;
+    padding-inline: 0;
+    border-bottom: var(--line-1) solid var(--border-inverse);
+    font-size: 1rem;
+    color: var(--text-inverse-muted);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-nav,
+  .header-nav__link,
+  .menu-toggle,
+  .menu-toggle__bar {
+    transition: none;
+  }
+}
+

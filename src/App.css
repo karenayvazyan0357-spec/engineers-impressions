@@ -1,0 +1,52 @@
+/* ==========================================================================
+   App-уровень: компоновка страницы.
+   --------------------------------------------------------------------------
+   Стили компонентов живут рядом со своими компонентами (Header.css, Hero.css
+   и далее по секциям). Здесь — только то, что относится к странице целиком:
+   порядок секций, общие обёртки, отступы между блоками.
+   Токены — в styles/variables.css.
+   ========================================================================== */
+
+/* Каркас страницы: main забирает всё свободное место в flex-колонке #root,
+   чтобы будущий футер всегда прижимался к низу документа. */
+main {
+  flex: 1 0 auto;
+}
+
+/* --- Skip-link «Перейти к содержимому» ----------------------------------- */
+/* Первый Tab с клавиатуры. Ссылка висит поверх фиксированной шапки
+   (z-index выше --z-header) и убрана над вьюпортом, пока не получит фокус:
+   при переходе по ней содержимое не прячется под шапкой. */
+
+.skip-link {
+  position: fixed;
+  top: var(--space-3);
+  left: 50%;
+  z-index: var(--z-toast);
+  padding: var(--space-3) var(--space-5);
+  background-color: var(--surface-inverse);
+  color: var(--text-inverse);
+  border: var(--line-1) solid var(--accent);
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  transform: translate(-50%, calc(-100% - var(--space-6)));
+  transition: transform var(--transition-fast);
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translate(-50%, 0);
+}
+
+/* Цель skip-ссылки принимает программный фокус (tabindex="-1"):
+   рамку вокруг всей страницы не рисуем, но гасим прокрутку под шапку. */
+main[id] {
+  scroll-margin-top: var(--header-height);
+}
+
+main:focus {
+  outline: none;
+}
